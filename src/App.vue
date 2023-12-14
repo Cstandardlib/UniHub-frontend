@@ -12,16 +12,21 @@
 }
 
 .layout-logo{
+/*
     width: 100px;
     height: 30px;
-    background: #5b6270;
+*/
+    width: 150px;
+    height: 45px;
+
+/*    background: #5b6270;*/
     border-radius: 3px;
     float: left;
     position: relative;
-    /*
+/*
     top: 15px;
     left: 20px;
-    */
+*/
 }
 .layout-nav{
     width: 420px;
@@ -42,7 +47,7 @@
                 <Menu mode="horizontal" theme="dark" active-name="1">
                     <!-- <div class="layout-logo"></div> -->
                     <div class="layout-logo">
-                        <Image src="src/assets/unihub-logo.png" fit="fill" width="100px" alt="fit" />
+                        <Image src="src/assets/unihub-logo-trans.png" fit="fill" width="150px" alt="fit" />
                     </div>
                     <div class="layout-nav">
                         <MenuItem name="1">
