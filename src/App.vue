@@ -64,6 +64,7 @@
                 <Content :style="{padding: '24px 0', minHeight: '280px', background: '#fff'}">
                     <Layout>
                         <Sider hide-trigger :style="{background: '#fff'}">
+                            
                             <Tree :data="data"></Tree>
                             <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
                                 <Submenu name="1">
@@ -109,15 +110,23 @@
                                 <BreadcrumbItem>Components</BreadcrumbItem>
                                 <BreadcrumbItem>Layout</BreadcrumbItem>
                             </Breadcrumb>
+                            <Space wrap>
+                                <Button @click="saveToLocal" type="primary" shape="circle" icon="ios-cloud-upload-outline">Save</Button>
+                                <Button @click="loadFromLocal" shape="circle" icon="ios-cloud-download-outline">Load</Button>
+                            </Space>
                             <!--:model-value="previewData" v-model="newValue"-->
+                            <div>
                             <v-md-editor :style="{top: '150px', left: '240px' }"
                                 :placeholder="placeholder"
                                 :disabled-menus="[]"
                                 
-                                v-model="text"
+                                v-model="markdownContent"
                                 :height="height"
                                 @change="handleChange">
                             </v-md-editor>
+                            
+                            <div v-html="renderedContent" />
+                            </div>
                         </Content>
                     </Layout>
                 </Content>
@@ -153,7 +162,10 @@
     export default {
         data () {
             return {
-                text: 'Hello, World! \n ![Pku logo](https://vim.pku.edu.cn/images/content/2017-10/20171027165035344238.jpg)',
+                markdownContent: 
+                //'Hello, World! \n ![Pku logo](https://vim.pku.edu.cn/images/content/2017-10/20171027165035344238.jpg)'
+                'Welcome to PKU!'
+                ,
                 isCollapsed: false
                 ,
                 formInline: {
@@ -221,6 +233,25 @@
                     }
                 })
             }
+            ,
+            saveToLocal() {
+                // 保存到本地存储
+                localStorage.setItem('markdownContent', this.markdownContent);
+            },
+            loadFromLocal() {
+                // 从本地存储加载
+                const savedContent = localStorage.getItem('markdownContent');
+                if (savedContent) {
+                    this.markdownContent = savedContent;
+                    this.renderedContent = this.renderMarkdown(savedContent);
+                }
+            },
+            renderMarkdown(content) {
+                // 使用相应的 Markdown 渲染库来将 Markdown 转换为 HTML
+                // 这里使用marked.js
+                const marked = require('marked');
+                return marked(content);
+            },
         }
     }
 </script>
