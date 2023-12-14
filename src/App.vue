@@ -65,42 +65,48 @@
                     <Layout>
                         <Sider hide-trigger :style="{background: '#fff'}">
                             
-                            <Tree :data="data"></Tree>
+                            <!--<Tree :data="data"></Tree>-->
                             <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
                                 <Submenu name="1">
                                     <template #title>
                                         <Icon type="md-folder"></Icon>
-                                        Item 1
+                                        Folder 1
                                     </template>
-                                    <MenuItem name="1-1">Option 1</MenuItem>
-                                    <MenuItem name="1-2">Option 2</MenuItem>
-                                    <MenuItem name="1-3">Option 3</MenuItem>
+                                    <MenuItem name="1-1">
+                                        <Button @click="loadFromLocal('document1')" icon="md-document" type="text">Document 1</Button>
+                                    </MenuItem>
+                                    <MenuItem name="1-2">
+                                        <Button @click="loadFromLocal('document2')" icon="md-document" type="text">Document 2</Button>
+                                    </MenuItem>
+                                    <MenuItem name="1-3">
+                                        <Button @click="loadFromLocal('document3')" icon="md-document" type="text">Document 3</Button>
+                                    </MenuItem>
                                     <Submenu name="1-4">
                                         <template #title>
                                             <Icon type="md-folder-open"></Icon>
-                                            Item 1-4
+                                            subfolder 1-1
                                         </template>
                                         <MenuItem name="1-4-1">
                                             <Icon type="md-document"></Icon>
-                                            Option 1</MenuItem>
+                                            file 111</MenuItem>
                             
                                     </Submenu>
                                 </Submenu>
                                 <Submenu name="2">
                                     <template #title>
-                                        <Icon type="ios-keypad"></Icon>
-                                        Item 2
+                                        <Icon type="md-folder"></Icon>
+                                        Folder 2
                                     </template>
-                                    <MenuItem name="2-1">Option 1</MenuItem>
-                                    <MenuItem name="2-2">Option 2</MenuItem>
+                                    <MenuItem name="2-1">File 1</MenuItem>
+                                    <MenuItem name="2-2">File 2</MenuItem>
                                 </Submenu>
                                 <Submenu name="3">
                                     <template #title>
-                                        <Icon type="ios-analytics"></Icon>
-                                        Item 3
+                                        <Icon type="md-folder"></Icon>
+                                        Folder 3
                                     </template>
-                                    <MenuItem name="3-1">Option 1</MenuItem>
-                                    <MenuItem name="3-2">Option 2</MenuItem>
+                                    <MenuItem name="3-1">File 1</MenuItem>
+                                    <MenuItem name="3-2">File 2</MenuItem>
                                 </Submenu>
                             </Menu>
                         </Sider>
@@ -111,8 +117,8 @@
                                 <BreadcrumbItem>Layout</BreadcrumbItem>
                             </Breadcrumb>
                             <Space wrap>
-                                <Button @click="saveToLocal" type="primary" shape="circle" icon="ios-cloud-upload-outline">Save</Button>
-                                <Button @click="loadFromLocal" shape="circle" icon="ios-cloud-download-outline">Load</Button>
+                                <Button @click="saveToCurrent" type="primary" shape="circle" icon="ios-cloud-upload-outline">Save</Button>
+                                <Button @click="loadFromLocal('document1')" shape="circle" icon="ios-cloud-download-outline">Load</Button>
                             </Space>
                             <!--:model-value="previewData" v-model="newValue"-->
                             <div>
@@ -165,6 +171,8 @@
                 markdownContent: 
                 //'Hello, World! \n ![Pku logo](https://vim.pku.edu.cn/images/content/2017-10/20171027165035344238.jpg)'
                 'Welcome to PKU!'
+                ,
+                currentMdKey: 'document1'
                 ,
                 isCollapsed: false
                 ,
@@ -234,16 +242,20 @@
                 })
             }
             ,
-            saveToLocal() {
-                // 保存到本地存储
-                localStorage.setItem('markdownContent', this.markdownContent);
+            saveToLocal(key) {
+                // 保存到本地存储，使用不同的键
+                localStorage.setItem(`markdownContent_${key}`, this.markdownContent);
             },
-            loadFromLocal() {
-                // 从本地存储加载
-                const savedContent = localStorage.getItem('markdownContent');
+            saveToCurrent(){
+                localStorage.setItem(`markdownContent_${this.currentMdKey}`, this.markdownContent);
+            },
+            loadFromLocal(key) {
+                // 从本地存储加载，使用不同的键
+                const savedContent = localStorage.getItem(`markdownContent_${key}`);
                 if (savedContent) {
                     this.markdownContent = savedContent;
                     this.renderedContent = this.renderMarkdown(savedContent);
+                    this.currentMdKey = key; // load后把key修改为当前的md文档
                 }
             },
             renderMarkdown(content) {
