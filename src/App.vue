@@ -18,8 +18,10 @@
     border-radius: 3px;
     float: left;
     position: relative;
+    /*
     top: 15px;
     left: 20px;
+    */
 }
 .layout-nav{
     width: 420px;
@@ -38,23 +40,26 @@
         <Layout>
             <Header>
                 <Menu mode="horizontal" theme="dark" active-name="1">
-                    <div class="layout-logo"></div>
+                    <!-- <div class="layout-logo"></div> -->
+                    <div class="layout-logo">
+                        <Image src="src/assets/unihub-logo.png" fit="fill" width="100px" alt="fit" />
+                    </div>
                     <div class="layout-nav">
                         <MenuItem name="1">
                             <Icon type="ios-navigate"></Icon>
-                            Item 1
+                            Home
                         </MenuItem>
                         <MenuItem name="2">
                             <Icon type="ios-keypad"></Icon>
-                            Item 2
+                            Menu
                         </MenuItem>
                         <MenuItem name="3">
                             <Icon type="ios-analytics"></Icon>
-                            Item 3
+                            User
                         </MenuItem>
                         <MenuItem name="4">
                             <Icon type="ios-paper"></Icon>
-                            Item 4
+                            todo
                         </MenuItem>
                     </div>
                 </Menu>
@@ -113,8 +118,8 @@
                         <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
                             <Breadcrumb :style="{margin: '16px 0'}">
                                 <BreadcrumbItem>Home</BreadcrumbItem>
-                                <BreadcrumbItem>Components</BreadcrumbItem>
-                                <BreadcrumbItem>Layout</BreadcrumbItem>
+                                <BreadcrumbItem>Folder</BreadcrumbItem>
+                                <BreadcrumbItem>File</BreadcrumbItem>
                             </Breadcrumb>
                             <Space wrap>
                                 <Button @click="saveToCurrent" type="primary" shape="circle" icon="ios-cloud-upload-outline">Save</Button>
@@ -137,7 +142,18 @@
                     </Layout>
                 </Content>
             </Layout>
-            <Footer class="layout-footer-center">2023 &copy; Unihub::Ultimate</Footer>
+            <Footer class="layout-footer-center">
+                2023 &copy; Unihub::io
+                
+            <!--
+                                <Image src="src/assets/unihub-logo.png" fit="fit" width="100px" alt="fit" />
+                <Col flex="1">
+                    <Image :src="src/assets/unihub-logo.png" :fit="fit" width="20px" height="10px" :alt="fit" />
+                    <Paragraph class="ivu-mt">{{ fit }}</Paragraph>
+                </Col>
+                <Image :src="assets/unihub-logo.png" :fit="fit" width="100px" height="100px" :alt="fit" />
+            -->
+            </Footer>
         </Layout>
     </div>
 <!--
@@ -251,11 +267,12 @@
             },
             loadFromLocal(key) {
                 // 从本地存储加载，使用不同的键
+                this.currentMdKey = key; // load后把key修改为当前的md文档
                 const savedContent = localStorage.getItem(`markdownContent_${key}`);
                 if (savedContent) {
                     this.markdownContent = savedContent;
                     this.renderedContent = this.renderMarkdown(savedContent);
-                    this.currentMdKey = key; // load后把key修改为当前的md文档
+                    //this.currentMdKey = key; // load后把key修改为当前的md文档
                 }
             },
             renderMarkdown(content) {
