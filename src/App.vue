@@ -283,8 +283,9 @@
             renderMarkdown(content) {
                 // 使用相应的 Markdown 渲染库来将 Markdown 转换为 HTML
                 // 这里使用marked.js
-                const marked = require('marked');
-                return marked(content);
+                //const marked = require('marked');
+                //return marked(content);
+                return content;
             },
         }
     }
